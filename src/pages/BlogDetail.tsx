@@ -8,6 +8,7 @@ export default function BlogDetail() {
   const navigate = useNavigate();
 
   const [post, setPost] = useState<Post | null>(null);
+  const [loading, setLoading] = useState(true);
 
   // useEffect(() => { ... }, [id]); -> id값이 바뀔 때마다 실행할 코드를 넣는 곳
   useEffect(() => {
@@ -15,8 +16,31 @@ export default function BlogDetail() {
     getPosts().then((data) => {
       const found = data.find((p) => p.id === id);
       setPost(found || null);
+      setLoading(false);
     });
   }, [id]);
+
+  // 데이터 아직 안 왔을 때 ( 로딩 )
+  if (loading) {
+    return (
+      <div className="text-center py-20">
+        <p className="text-slate-400">불러오는 중...</p>
+      </div>
+    );
+  }
+
+  // 데이터 다 받았는데 글이 없을 때
+  if (!post) {
+    return (
+      <div className="text-center py-20">
+        <h1 className="text-4xl font-bold mb-4">404</h1>
+        <p className="text-slate-400 mb-8">글을 찾을 수 없습니다.</p>
+        <Link to="/blog" className="text-blue-400 hover:underline">
+          목록으로 돌아가기
+        </Link>
+      </div>
+    );
+  }
 
   // 삭제 핸들러
   const handleDelete = async () => {
@@ -56,7 +80,6 @@ export default function BlogDetail() {
           ← 목록으로
         </Link>
 
-        {/* ✅ 삭제 버튼 */}
         <button
           onClick={handleDelete}
           className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
@@ -77,12 +100,22 @@ export default function BlogDetail() {
       </div>
 
       <h1 className="text-4xl font-bold mb-4">{post.title}</h1>
-      <time className="text-slate-500 mb-8 block">{post.date}</time>
+      <time className="text-slate-500 mb-8 block">
+        {new Date(post.date).toLocaleDateString("ko-KR", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          weekday: "short",
+          // hour: "2-digit",
+          // minute: "2-digit",
+        })}
+      </time>
 
       <div className="prose prose-invert max-w-none">
-        <div className="whitespace-pre-wrap text-slate-300 leading-relaxed">
-          {post.content}
-        </div>
+        <div
+          className="whitespace-pre-wrap text-slate-300 leading-relaxed"
+          dangerouslySetInnerHTML={{ __html: post.content }}
+        />
       </div>
     </article>
   );
