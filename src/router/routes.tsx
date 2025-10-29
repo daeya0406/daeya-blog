@@ -4,6 +4,7 @@ import DefaultLayout from "../layouts/DefaultLayout";
 import Home from "../pages/Home";
 import BlogList from "../pages/BlogList";
 import BlogDetail from "../pages/BlogDetail";
+import BlogNew from "../pages/BlogNew";
 import About from "../pages/About";
 
 export default function AppRoutes() {
@@ -19,6 +20,7 @@ export default function AppRoutes() {
         <Route path="/blog" element={<BlogList />} />
         <Route path="/blog/:id" element={<BlogDetail />} />
         <Route path="/about" element={<About />} />
+        <Route path="/blog/new" element={<BlogNew />} />
       </Route>
     </Routes>
   );

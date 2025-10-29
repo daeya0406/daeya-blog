@@ -1,9 +1,9 @@
 export interface Post {
-  id: string;
+  id: number;
   title: string;
   content: string;
   summary: string;
-  date: string;
+  date: string; // datetime
   tags: string[];
   thumbnail?: string;
 }

@@ -1,10 +1,28 @@
 import { Link } from "react-router-dom";
-import { posts } from "../data/posts";
+import { useEffect, useState } from "react";
+import { getPosts } from "../apis/posts";
+import type { Post } from "../types/post";
 
 export default function BlogList() {
+  const [posts, setPosts] = useState<Post[]>([]);
+
+  useEffect(() => {
+    getPosts().then((data) => {
+      setPosts(data);
+    });
+  }, []);
+
   return (
     <div>
-      <h1 className="text-4xl font-bold mb-8">Blog</h1>
+      <div className="flex items-center justify-between mb-8">
+        <h1 className="text-4xl font-bold">Blog</h1>
+        <Link
+          to="/blog/new"
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
+        >
+          글쓰기
+        </Link>
+      </div>
       <p className="test-slate-400 mb-8">총 {posts.length}개의 글</p>
       <div className="grid gap-6">
         {posts.map((post) => (

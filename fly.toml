@@ -1,0 +1,24 @@
+app = "daeya-blog"
+
+[build]
+  image = "flyio/pocketbase:latest"
+
+[env]
+  POCKETBASE_ADMIN_EMAIL="admin@example.com"
+  POCKETBASE_ADMIN_PASSWORD="yourpassword"
+
+[[services]]
+  internal_port = 8090
+  processes = ["app"]
+
+  [[services.ports]]
+    handlers = ["http"]
+    port = 80
+
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = 443
+
+  [[services.tcp_checks]]
+    interval = "15s"
+    timeout = "2s"
